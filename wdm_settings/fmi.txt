@@ -1,0 +1,123 @@
+Scenario.name = default_scenario
+Scenario.simulateConnections = true
+Scenario.updateInterval = 1
+# 43k ~= 12h
+Scenario.endTime = 700k
+
+Report.warmup = 200000
+
+Scenario.nrofHostGroups = 9
+
+#=====================================================================
+
+Group.router = EpidemicRouter
+Group.msgTtl = 1433
+Group.bufferSize = 100M
+Group.transmitRange = 10
+Group.transmitSpeed = 100k
+Group.workDayLength = 28800
+
+#=====================================================================
+
+Group.probGoShoppingAfterWork = 0
+Group.nrOfMeetingSpots = 10
+Group.minAfterShoppingStopTime = 3600
+Group.maxAfterShoppingStopTime = 7200
+Group.meetingSpotsFile = data/fmi/meeting.wkt
+
+#=====================================================================
+
+Group.shoppingControlSystemNr = 1
+Group.busControlSystemNr = 1
+Group.ownCarProb = 1
+
+#=====================================================================
+
+Group.nrOfOffices = 50
+Group.officeWaitTimeParetoCoeff = 0.5
+Group.officeMinWaitTime = 10
+Group.officeMaxWaitTime = 100000
+Group.officeSize = 10
+Group.officeLocationsFile = data/fmi/offices.wkt
+
+#=====================================================================
+
+Group.timeDiffSTD = 7200
+Group.minGroupSize = 1
+Group.maxGroupSize = 3
+Group.nrofHosts = 1
+
+Group.movementModel = WorkingDayMovement
+Group.speed = 0.8, 1.4
+Group.waitTime = 0, 0
+
+Group.homeLocationsFile = data/fmi/homes.wkt
+
+#=====================================================================
+
+Group1.groupID = A
+Group2.groupID = B
+Group3.groupID = C
+Group4.groupID = D
+Group5.groupID = E
+Group6.groupID = F
+Group7.groupID = G
+Group8.groupID = H
+
+Group9.groupID = K
+Group9.movementModel = ShortestPathMapBasedMovement
+
+#=====================================================================
+
+ExternalEvents.nrofPreload = 500
+ExternalEvents.filePath = ee/700_events_1000_nodes_700ks.txt
+
+#=====================================================================
+
+MovementModel.rngSeed = [2; 8372; 98092; 18293; 777]
+MovementModel.worldSize = 2000, 1000
+MovementModel.warmup = 43000
+
+#=====================================================================
+
+MapBasedMovement.nrofMapFiles = 1
+MapBasedMovement.mapFile1 = data/fmi/paths.wkt
+
+#=====================================================================
+
+Report.nrofReports = 8
+Report.reportDir = [reports/OfficeSize500/1; reports/OfficeSize500/2; reports/OfficeSize500/3; reports/OfficeSize500/4; reports/OfficeSize500/5]
+
+Report.report1 = InterContactTimesReport
+Report.report2 = ContactTimesReport
+Report.report3 = UniqueEncountersReport
+Report.report4 = TotalEncountersReport
+Report.report5 = EncountersVSUniqueEncountersReport
+Report.report6 = ContactsDuringAnICTReport
+Report.report7 = MessageStatsReport
+Report.report8 = ContactsPerHourReport
+
+#=====================================================================
+
+ProphetRouter.secondsInTimeUnit = 30
+SprayAndWaitRouter.nrofCopies = 6
+SprayAndWaitRouter.binaryMode = true
+
+#=====================================================================
+
+Optimization.connectionAlg = 2
+Optimization.cellSizeMult = 5
+Optimization.randomizeUpdateOrder = true
+
+#=====================================================================
+
+GUI.UnderlayImage.fileName = data/fmi/bg.png
+GUI.UnderlayImage.offset = -400, 0
+GUI.UnderlayImage.scale = 1
+GUI.UnderlayImage.rotate = 0
+GUI.EventLogPanel.nrofEvents = 200
+
+#=====================================================================
+
+Events.nrof = 0
+Group.nrofInterfaces = 0
