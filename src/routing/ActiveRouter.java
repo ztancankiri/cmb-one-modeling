@@ -44,10 +44,10 @@ public abstract class ActiveRouter extends MessageRouter {
 	/** connection(s) that are currently used for sending */
 	protected ArrayList<Connection> sendingConnections;
 	/** sim time when the last TTL check was done */
-	private double lastTtlCheck;
+	protected double lastTtlCheck;
 
-	private MessageTransferAcceptPolicy policy;
-	private EnergyModel energy;
+	protected MessageTransferAcceptPolicy policy;
+	protected EnergyModel energy;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in

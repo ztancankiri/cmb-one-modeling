@@ -82,26 +82,26 @@ public abstract class MessageRouter {
 	/** Receive return value for unspecified reason */
 	public static final int DENIED_UNSPECIFIED = -99;
 
-	private List<MessageListener> mListeners;
+	protected List<MessageListener> mListeners;
 	/** The messages being transferred with msgID_hostName keys */
-	private HashMap<String, Message> incomingMessages;
+	protected HashMap<String, Message> incomingMessages;
 	/** The messages this router is carrying */
-	private HashMap<String, Message> messages;
+	protected HashMap<String, Message> messages;
 	/** The messages this router has received as the final recipient */
-	private HashMap<String, Message> deliveredMessages;
+	protected HashMap<String, Message> deliveredMessages;
 	/** The messages that Applications on this router have blacklisted */
-	private HashMap<String, Object> blacklistedMessages;
+	protected HashMap<String, Object> blacklistedMessages;
 	/** Host where this router belongs to */
-	private DTNHost host;
+	protected DTNHost host;
 	/** size of the buffer */
-	private long bufferSize;
+	protected long bufferSize;
 	/** TTL for all messages */
 	protected int msgTtl;
 	/** Queue mode for sending messages */
-	private int sendQueueMode;
+	protected int sendQueueMode;
 
 	/** applications attached to the host */
-	private HashMap<String, Collection<Application>> applications = null;
+	protected HashMap<String, Collection<Application>> applications = null;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in

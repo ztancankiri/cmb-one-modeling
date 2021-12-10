@@ -50,34 +50,65 @@ public class BlueRouter extends ActiveRouter {
 	}
 
 	@Override
-	public Message messageTransferred(String id, DTNHost from) {
-		Message m = super.messageTransferred(id, from);
+	public BlueRouter replicate() {
+		return new BlueRouter(this);
+	}
 
-		/**
-		 *  N.B. With application support the following if-block
-		 *  becomes obsolete, and the response size should be configured
-		 *  to zero.
-		 */
-		// check if msg was for this host and a response was requested
-//		if (m.getTo() == getHost() && m.getResponseSize() > 0) {
-//			// generate a response message
-//			Message res = new Message(this.getHost(),m.getFrom(),
-//					RESPONSE_PREFIX+m.getId(), m.getResponseSize());
-//			this.createNewMessage(res);
-//			this.getMessage(RESPONSE_PREFIX+m.getId()).setRequest(m);
-//		}
-		if (getHost().getGroupId().equals(ROUTER_NAME) && m.getResponseSize() > 0){
+	@Override
+	public Message messageTransferred(String id, DTNHost from) {
+		Message incoming = removeFromIncomingBuffer(id, from);
+		boolean isFinalRecipient;
+		boolean isFirstDelivery; // is this first delivered instance of the msg
+
+		if (incoming == null) {
+			throw new SimError("No message with ID " + id + " in the incoming "+
+					"buffer of " + this.host);
+		}
+
+		incoming.setReceiveTime(SimClock.getTime());
+
+		// Pass the message to the application (if any) and get outgoing message
+		Message outgoing = incoming;
+		for (Application app : getApplications(incoming.getAppID())) {
+			// Note that the order of applications is significant
+			// since the next one gets the output of the previous.
+			outgoing = app.handle(outgoing, this.host);
+			if (outgoing == null) break; // Some app wanted to drop the message
+		}
+
+		Message aMessage = (outgoing==null)?(incoming):(outgoing);
+		// If the application re-targets the message (changes 'to')
+		// then the message is not considered as 'delivered' to this host.
+		isFinalRecipient = getHost().getGroupId().equals(ROUTER_NAME);
+		isFirstDelivery = isFinalRecipient && !isDeliveredMessage(aMessage);
+
+		if (!isFinalRecipient && outgoing!=null) {
+			// not the final recipient and app doesn't want to drop the message
+			// -> put to buffer
+			addToMessages(aMessage, false);
+		} else if (isFirstDelivery) {
+			this.deliveredMessages.put(id, aMessage);
+		} else if (outgoing == null) {
+			// Blacklist messages that an app wants to drop.
+			// Otherwise the peer will just try to send it back again.
+			this.blacklistedMessages.put(id, null);
+		}
+
+		for (MessageListener ml : this.mListeners) {
+			ml.messageTransferred(aMessage, from, this.host,
+					isFirstDelivery);
+		}
+
+		Message m = aMessage;
+		if (getHost().getGroupId().equals(ROUTER_NAME) && m.getResponseSize() > 0) {
+			// generate a response message
 			Message res = new Message(this.getHost(),m.getFrom(),
 					RESPONSE_PREFIX+m.getId(), m.getResponseSize());
 			this.createNewMessage(res);
 			this.getMessage(RESPONSE_PREFIX+m.getId()).setRequest(m);
 		}
-		return m;
-	}
 
-	@Override
-	public BlueRouter replicate() {
-		return new BlueRouter(this);
+		return m;
 	}
 
 }
