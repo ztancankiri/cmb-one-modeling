@@ -256,6 +256,12 @@ public class EventLogPanel extends JPanel
 		}
 
 	addEvent(name, host1, host2, message, check.pauseOnEvent());
+		if(host1 != null){
+			System.out.println(name + " Host1 id:"+host1.getAddress()+ " mes: "+message +" /con: "+host1.getConnections()+" /mes:"+host1.getMessageCollection());
+		}
+		if(host2 != null){
+			System.out.println(name + " Host2 id:"+host2.getAddress()+" mes: "+message +" /con: "+host2.getConnections()+" /mes:"+host2.getMessageCollection());
+		}
 	}
 
 	// Implementations of ConnectionListener and MessageListener interfaces
