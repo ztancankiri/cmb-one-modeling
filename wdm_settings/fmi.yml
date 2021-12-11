@@ -13,7 +13,8 @@ Group.msgTtl = 1433
 Group.bufferSize = 100M
 Group.transmitRange = 10
 Group.transmitSpeed = 100k
-Group.workDayLength = 28800
+#Group.workDayLength = 28800
+Group.workDayLength = 1000
 
 #=====================================================================
 
@@ -43,9 +44,9 @@ Group.officeLocationsFile = data/fmi/offices.wkt
 Group.timeDiffSTD = 7200
 Group.minGroupSize = 1
 Group.maxGroupSize = 3
-Group.nrofHosts = 4
+Group.nrofHosts = 1
 
-Group.movementModel = WorkingDayMovement
+Group.movementModel = FMIMovement
 Group.speed = 0.8, 1.4
 Group.waitTime = 0, 0
 
@@ -61,7 +62,7 @@ Group1.groupID = A
 #Group6.groupID = F
 #Group7.groupID = G
 #Group8.groupID = H
-#
+
 Group2.groupID = K
 Group2.movementModel = ShortestPathMapBasedMovement
 Group2.nrofHosts = 0
