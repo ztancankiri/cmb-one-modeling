@@ -79,8 +79,7 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements
 		nrOfOffices = settings.getInt(NR_OF_OFFICES_SETTING);
 
 		distance = settings.getInt(OFFICE_SIZE_SETTING);
-		officeWaitTimeParetoCoeff = settings.getDouble(
-				OFFICE_WAIT_TIME_PARETO_COEFF_SETTING);
+		officeWaitTimeParetoCoeff = settings.getDouble(OFFICE_WAIT_TIME_PARETO_COEFF_SETTING);
 		officeMinWaitTime = settings.getDouble(OFFICE_MIN_WAIT_TIME_SETTING);
 		officeMaxWaitTime = settings.getDouble(OFFICE_MAX_WAIT_TIME_SETTING);
 
@@ -90,43 +89,37 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements
 
 		String officeLocationsFile = null;
 		try {
-			officeLocationsFile = settings.getSetting(
-					OFFICE_LOCATIONS_FILE_SETTING);
+			officeLocationsFile = settings.getSetting(OFFICE_LOCATIONS_FILE_SETTING);
 		} catch (Throwable t) {
 			// Do nothing;
 		}
 
 		if (officeLocationsFile == null) {
-			MapNode[] mapNodes = (MapNode[])getMap().getNodes().
-				toArray(new MapNode[0]);
-			int officeIndex = rng.nextInt(mapNodes.length - 1) /
-				(mapNodes.length/nrOfOffices);
+			MapNode[] mapNodes = (MapNode[])getMap().getNodes().toArray(new MapNode[0]);
+			int officeIndex = rng.nextInt(mapNodes.length - 1) / (mapNodes.length/nrOfOffices);
 			officeLocation = mapNodes[officeIndex].getLocation().clone();
 		} else {
 			try {
 				allOffices = new LinkedList<Coord>();
-				List<Coord> locationsRead = (new WKTReader()).
-					readPoints(new File(officeLocationsFile));
+				List<Coord> locationsRead = (new WKTReader()).readPoints(new File(officeLocationsFile));
 				for (Coord coord : locationsRead) {
 					SimMap map = getMap();
 					Coord offset = map.getOffset();
-					// mirror points if map data is mirrored
+
 					if (map.isMirrored()) {
 						coord.setLocation(coord.getX(), -coord.getY());
 					}
 					coord.translate(offset.getX(), offset.getY());
 					allOffices.add(coord);
 				}
-				officeLocation = allOffices.get(
-						rng.nextInt(allOffices.size())).clone();
+				officeLocation = allOffices.get(rng.nextInt(allOffices.size())).clone();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
 		deskLocation = getRandomCoorinateInsideOffice();
-		paretoRNG = new ParetoRNG(rng, officeWaitTimeParetoCoeff,
-				officeMinWaitTime, officeMaxWaitTime);
+		paretoRNG = new ParetoRNG(rng, officeWaitTimeParetoCoeff, officeMinWaitTime, officeMaxWaitTime);
 	}
 
 	/**
@@ -283,6 +276,8 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements
 
 	public Coord getRandomOfficeLocation() {
 		officeLocation = allOffices.get(rng.nextInt(allOffices.size())).clone();
+		deskLocation = getRandomCoorinateInsideOffice();
+		paretoRNG = new ParetoRNG(rng, officeWaitTimeParetoCoeff, officeMinWaitTime, officeMaxWaitTime);
 		return officeLocation.clone();
 	}
 

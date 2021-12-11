@@ -18,20 +18,6 @@ Group.workDayLength = 1000
 
 #=====================================================================
 
-Group.probGoShoppingAfterWork = 0
-Group.nrOfMeetingSpots = 10
-Group.minAfterShoppingStopTime = 3600
-Group.maxAfterShoppingStopTime = 7200
-Group.meetingSpotsFile = data/fmi/meeting.wkt
-
-#=====================================================================
-
-Group.shoppingControlSystemNr = 1
-Group.busControlSystemNr = 1
-Group.ownCarProb = 1
-
-#=====================================================================
-
 Group.nrOfOffices = 50
 Group.officeWaitTimeParetoCoeff = 0.5
 Group.officeMinWaitTime = 10
@@ -44,7 +30,7 @@ Group.officeLocationsFile = data/fmi/offices.wkt
 Group.timeDiffSTD = 7200
 Group.minGroupSize = 1
 Group.maxGroupSize = 3
-Group.nrofHosts = 1
+Group.nrofHosts = 150
 
 Group.movementModel = FMIMovement
 Group.speed = 0.8, 1.4
