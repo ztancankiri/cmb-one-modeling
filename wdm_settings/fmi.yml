@@ -20,8 +20,10 @@ Group.timeDiffSTD = 7200
 Group.minGroupSize = 1
 Group.maxGroupSize = 3
 Group.nrofHosts = 150
-Group.officeLocationsFile = data/fmi/offices.wkt
 Group.homeLocationsFile = data/fmi/homes.wkt
+Group.officeLocationsFile = data/fmi/offices.wkt
+Group.classroomLocationsFile = data/fmi/classroom.wkt
+Group.officeClassroomWeight = 0.2
 Group.workDayLength = 3600
 
 Group.movementModel = FMIMovement
@@ -31,7 +33,8 @@ Group.waitTime = 0, 0
 #=====================================================================
 
 Group1.groupID = A
-#Group2.groupID = B
+Group2.groupID = B
+
 #Group3.groupID = C
 #Group4.groupID = D
 #Group5.groupID = E
@@ -47,7 +50,8 @@ Group2.nrofHosts = 0
 
 MovementModel.rngSeed = [2; 8372; 98092; 18293; 777]
 MovementModel.worldSize = 2065, 1118
-MovementModel.warmup = 43000
+#MovementModel.warmup = 43000
+MovementModel.warmup = 0
 
 #=====================================================================
 

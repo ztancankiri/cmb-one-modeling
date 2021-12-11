@@ -14,15 +14,19 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements Switc
 
 	public static final String WORK_DAY_LENGTH_SETTING = "workDayLength";
 	public static final String OFFICE_LOCATIONS_FILE_SETTING = "officeLocationsFile";
+	public static final String CLASSROOM_LOCATIONS_FILE_SETTING = "classroomLocationsFile";
+	public static final String OFFICE_CLASSROOM_WEIGHT = "officeClassroomWeight";
 
 	private int workDayLength;
 	private int startedWorkingTime;
 	private boolean ready;
 
 	private List<Coord> allOffices;
+	private List<Coord> allClassrooms;
+	private double officeClassroomWeight;
 
 	private Coord lastWaypoint;
-	private Coord officeLocation;
+	private Coord location;
 
 	public FMIOfficeActivityMovement(Settings settings) {
 		super(settings);
@@ -31,15 +35,19 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements Switc
 		startedWorkingTime = -1;
 
 		String officeLocationsFile = null;
+		String classroomLocationsFile = null;
+		officeClassroomWeight = 0.0;
 		try {
 			officeLocationsFile = settings.getSetting(OFFICE_LOCATIONS_FILE_SETTING);
+			classroomLocationsFile = settings.getSetting(CLASSROOM_LOCATIONS_FILE_SETTING);
+			officeClassroomWeight = settings.getDouble(OFFICE_CLASSROOM_WEIGHT);
 		} catch (Throwable ignored) {
 		}
 
 		try {
 			allOffices = new LinkedList<>();
-			List<Coord> locationsRead = (new WKTReader()).readPoints(new File(officeLocationsFile));
-			for (Coord coord : locationsRead) {
+			List<Coord> officeLocationsRead = (new WKTReader()).readPoints(new File(officeLocationsFile));
+			for (Coord coord : officeLocationsRead) {
 				SimMap map = getMap();
 				Coord offset = map.getOffset();
 
@@ -49,7 +57,26 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements Switc
 				coord.translate(offset.getX(), offset.getY());
 				allOffices.add(coord);
 			}
-			officeLocation = allOffices.get(rng.nextInt(allOffices.size())).clone();
+
+			allClassrooms = new LinkedList<>();
+			List<Coord> classroomLocationsRead = (new WKTReader()).readPoints(new File(classroomLocationsFile));
+			for (Coord coord : classroomLocationsRead) {
+				SimMap map = getMap();
+				Coord offset = map.getOffset();
+
+				if (map.isMirrored()) {
+					coord.setLocation(coord.getX(), -coord.getY());
+				}
+				coord.translate(offset.getX(), offset.getY());
+				allClassrooms.add(coord);
+			}
+
+			if (rng.nextDouble() < officeClassroomWeight) {
+				location = allOffices.get(rng.nextInt(allOffices.size())).clone();
+			}
+			else {
+				location = allClassrooms.get(rng.nextInt(allClassrooms.size())).clone();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,7 +88,15 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements Switc
 		startedWorkingTime = -1;
 
 		this.allOffices = proto.allOffices;
-		officeLocation = allOffices.get(rng.nextInt(allOffices.size())).clone();
+		this.allClassrooms = proto.allClassrooms;
+		this.officeClassroomWeight = proto.officeClassroomWeight;
+
+		if (rng.nextDouble() < officeClassroomWeight) {
+			location = allOffices.get(rng.nextInt(allOffices.size())).clone();
+		}
+		else {
+			location = allClassrooms.get(rng.nextInt(allClassrooms.size())).clone();
+		}
 	}
 
 	@Override
@@ -88,7 +123,7 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements Switc
 		}
 
 		Path path =  new Path(1);
-		path.addWaypoint(officeLocation.clone());
+		path.addWaypoint(location.clone());
 		return path;
 	}
 
@@ -116,13 +151,18 @@ public class FMIOfficeActivityMovement extends MapBasedMovement implements Switc
 		ready = false;
 	}
 
-	public Coord getOfficeLocation() {
-		return officeLocation.clone();
+	public Coord getLocation() {
+		return location.clone();
 	}
 
 	public Coord getRandomOfficeLocation() {
-		officeLocation = allOffices.get(rng.nextInt(allOffices.size())).clone();
-		return officeLocation.clone();
-	}
+		if (rng.nextDouble() < officeClassroomWeight) {
+			location = allOffices.get(rng.nextInt(allOffices.size())).clone();
+		}
+		else {
+			location = allClassrooms.get(rng.nextInt(allClassrooms.size())).clone();
+		}
 
+		return location.clone();
+	}
 }

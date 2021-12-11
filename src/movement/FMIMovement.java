@@ -46,11 +46,11 @@ public class FMIMovement extends ExtendedMovementModel {
 				setCurrentMovementModel(carMM);
 
 				if (rng.nextDouble() < HOME_PROB) {
-					carMM.setNextRoute(workerMM.getOfficeLocation(), homeMM.getHomeLocation());
+					carMM.setNextRoute(workerMM.getLocation(), homeMM.getHomeLocation());
 					mode = TO_HOME_MODE;
 				}
 				else {
-					carMM.setNextRoute(workerMM.getOfficeLocation(), workerMM.getRandomOfficeLocation());
+					carMM.setNextRoute(workerMM.getLocation(), workerMM.getRandomOfficeLocation());
 					mode = TO_WORK_MODE;
 				}
 			}
