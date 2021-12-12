@@ -1,31 +1,39 @@
-/*
- * Copyright 2010 Aalto University, ComNet
- * Released under GPLv3. See LICENSE.txt for details.
- */
 package movement;
 
 import core.Coord;
 import core.Settings;
+import input.WKTReader;
+import movement.map.SimMap;
 
-/**
- * A dummy stationary "movement" model where nodes do not move.
- * Might be useful for simulations with only external connection events.
- */
-public class StationaryMovement extends MovementModel {
+import java.io.File;
+import java.util.List;
+
+public class StationaryMovement extends MapBasedMovement {
 	/** Per node group setting for setting the location ({@value}) */
-	public static final String LOCATION_S = "nodeLocation";
-	private Coord loc; /** The location of the nodes */
+	public static final String LOCATION_S = "nodeLocationFile";
 
-	/**
-	 * Creates a new movement model based on a Settings object's settings.
-	 * @param s The Settings object where the settings are read from
-	 */
+	private Coord loc;
+
 	public StationaryMovement(Settings s) {
 		super(s);
-		int coords[];
 
-		coords = s.getCsvInts(LOCATION_S, 2);
-		this.loc = new Coord(coords[0],coords[1]);
+		String locationFile =  null;
+		try {
+			locationFile = s.getSetting(LOCATION_S);
+			List<Coord> locationRead = (new WKTReader()).readPoints(new File(locationFile));
+
+			SimMap map = getMap();
+			Coord offset = map.getOffset();
+
+			Coord coord = locationRead.get(0);
+			if (map.isMirrored()) {
+				coord.setLocation(coord.getX(), -coord.getY());
+			}
+			coord.translate(offset.getX(), offset.getY());
+
+			this.loc = coord;
+		} catch (Throwable ignored) {
+		}
 	}
 
 	/**

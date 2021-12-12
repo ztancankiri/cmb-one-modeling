@@ -2,24 +2,32 @@ Scenario.name = default_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 1
 # 43k ~= 12h
-Scenario.endTime = 700k
+#Scenario.endTime = 700k
+Scenario.endTime = 86k
 
-Scenario.nrofHostGroups = 2
+Scenario.nrofHostGroups = 5
 
 #=====================================================================
 
-Group.router = EpidemicRouter
+firstinterface.type = SimpleBroadcastInterface
+firstinterface.transmitSpeed = 250000k
+firstinterface.transmitRange = 10
+
+#=====================================================================
+
+Group.router = BlueRouter
 Group.msgTtl = 1433
-Group.bufferSize = 100M
-Group.transmitRange = 10
-Group.transmitSpeed = 100k
+Group.bufferSize = 10
+Group.nrofInterfaces = 1
+Group.interface1 = firstinterface
+Group.nrofApplications = 0
 
 #=====================================================================
 
 Group.timeDiffSTD = 7200
 Group.minGroupSize = 1
 Group.maxGroupSize = 3
-Group.nrofHosts = 150
+Group.nrofHosts = 50
 Group.homeLocationsFile = data/fmi/homes.wkt
 Group.officeLocationsFile = data/fmi/offices.wkt
 Group.classroomLocationsFile = data/fmi/classroom.wkt
@@ -33,7 +41,25 @@ Group.waitTime = 0, 0
 #=====================================================================
 
 Group1.groupID = A
-Group2.groupID = B
+
+#=====================================================================
+
+Group2.groupID = router1
+Group2.movementModel = StationaryMovement
+Group2.nodeLocationFile = data/fmi/router1.wkt
+Group2.nrofHosts = 1
+
+Group3.groupID = router2
+Group3.movementModel = StationaryMovement
+Group3.nodeLocationFile = data/fmi/router2.wkt
+Group3.nrofHosts = 1
+
+Group4.groupID = router3
+Group4.movementModel = StationaryMovement
+Group4.nodeLocationFile = data/fmi/router3.wkt
+Group4.nrofHosts = 1
+
+#=====================================================================
 
 #Group3.groupID = C
 #Group4.groupID = D
@@ -42,9 +68,9 @@ Group2.groupID = B
 #Group7.groupID = G
 #Group8.groupID = H
 
-Group2.groupID = K
-Group2.movementModel = ShortestPathMapBasedMovement
-Group2.nrofHosts = 0
+Group5.groupID = K
+Group5.movementModel = ShortestPathMapBasedMovement
+Group5.nrofHosts = 0
 
 #=====================================================================
 
@@ -57,6 +83,15 @@ MovementModel.warmup = 0
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/fmi/paths.wkt
+
+#=====================================================================
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 55,65
+Events1.size = 1
+Events1.hosts = 0,5
+Events1.prefix = M
 
 #=====================================================================
 
@@ -74,6 +109,4 @@ GUI.EventLogPanel.nrofEvents = 200
 
 #=====================================================================
 
-Events.nrof = 0
-Group.nrofInterfaces = 0
 Report.nrofReports = 0
