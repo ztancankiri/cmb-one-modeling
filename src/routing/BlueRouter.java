@@ -46,7 +46,10 @@ public class BlueRouter extends ActiveRouter {
 	@Override
 	public boolean createNewMessage(Message m) {
 		if (enabled) {
-			return super.createNewMessage(m);
+			if (this.getFreeBufferSize() > 0){
+				return super.createNewMessage(m);
+			}
+			return false;
 		}
 
 		return false;
