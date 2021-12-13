@@ -5,7 +5,7 @@ Scenario.updateInterval = 1
 #Scenario.endTime = 700k
 Scenario.endTime = 86k
 
-Scenario.nrofHostGroups = 5
+Scenario.nrofHostGroups = 6
 
 #=====================================================================
 
@@ -61,16 +61,17 @@ Group4.nrofHosts = 1
 
 #=====================================================================
 
-#Group3.groupID = C
-#Group4.groupID = D
-#Group5.groupID = E
-#Group6.groupID = F
-#Group7.groupID = G
-#Group8.groupID = H
+Group5.groupID = throwbox
+Group5.bufferSize = 1000000
+Group5.movementModel = StationaryMovement
+Group5.nodeLocationFile = data/fmi/throwbox.wkt
+Group5.nrofHosts = 1
 
-Group5.groupID = K
-Group5.movementModel = ShortestPathMapBasedMovement
-Group5.nrofHosts = 0
+#=====================================================================
+
+Group6.groupID = K
+Group6.movementModel = ShortestPathMapBasedMovement
+Group6.nrofHosts = 0
 
 #=====================================================================
 
