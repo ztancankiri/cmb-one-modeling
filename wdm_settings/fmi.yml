@@ -35,7 +35,7 @@ Group.officeClassroomWeight = 0.2
 Group.workDayLength = 3600
 
 Group.movementModel = FMIMovement
-Group.speed = 0.8, 1.4
+Group.speed = 0.1, 0.2
 Group.waitTime = 0, 0
 
 #=====================================================================

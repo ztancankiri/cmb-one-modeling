@@ -595,12 +595,15 @@ public abstract class MessageRouter {
 				" incoming message(s)");
 		RoutingInfo delivered = new RoutingInfo(this.deliveredMessages.size() +
 				" delivered message(s)");
+		RoutingInfo messages = new RoutingInfo(this.messages.size() +
+				" message(s)");
 
 		RoutingInfo cons = new RoutingInfo(host.getConnections().size() +
 			" connection(s)");
 
 		ri.addMoreInfo(incoming);
 		ri.addMoreInfo(delivered);
+		ri.addMoreInfo(messages);
 		ri.addMoreInfo(cons);
 
 		for (Message m : this.incomingMessages.values()) {
@@ -609,6 +612,10 @@ public abstract class MessageRouter {
 
 		for (Message m : this.deliveredMessages.values()) {
 			delivered.addMoreInfo(new RoutingInfo(m + " path:" + m.getHops()));
+		}
+
+		for (Message m : this.messages.values()) {
+			messages.addMoreInfo(new RoutingInfo(m + " path:" + m.getHops()));
 		}
 
 		for (Connection c : host.getConnections()) {

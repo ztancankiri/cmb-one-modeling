@@ -25,14 +25,14 @@ public class BlueRouter extends ActiveRouter {
 	@Override
 	public void update() {
 		super.update();
-		if (isTransferring() || !canStartTransfer()) {
-			return; // transferring, don't try other connections yet
-		}
-
-		// Try first the messages that can be delivered to final recipient
-		if (exchangeDeliverableMessages() != null) {
-			return; // started a transfer, don't try others (yet)
-		}
+//		if (isTransferring() || !canStartTransfer()) {
+//			return; // transferring, don't try other connections yet
+//		}
+//
+//		// Try first the messages that can be delivered to final recipient
+//		if (exchangeDeliverableMessages() != null) {
+//			return; // started a transfer, don't try others (yet)
+//		}
 
 		// then try any/all message to any/all connection
 		this.tryAllMessagesToAllConnections();
@@ -74,22 +74,24 @@ public class BlueRouter extends ActiveRouter {
 				break;
 		}
 
-		Message aMessage = incoming;
-
 		isFinalRecipient = getHost().getGroupId().startsWith(ROUTER_NAME);
-		isFirstDelivery = isFinalRecipient && !isDeliveredMessage(aMessage);
+		isFirstDelivery = isFinalRecipient && !isDeliveredMessage(incoming);
 
 		if (!isFinalRecipient && outgoing != null) {
-			addToMessages(aMessage, false);
+			addToMessages(incoming, false);
 		} else if (isFirstDelivery) {
-			this.deliveredMessages.put(id, aMessage);
+			this.deliveredMessages.put(id, incoming);
+		}
+
+		if (isDeliveredMessage(incoming)) {
+			from.getRouter().messages.remove(id);
 		}
 
 		for (MessageListener ml : this.mListeners) {
-			ml.messageTransferred(aMessage, from, this.host, isFirstDelivery);
+			ml.messageTransferred(incoming, from, this.host, isFirstDelivery);
 		}
 
-		return aMessage;
+		return incoming;
 	}
 
 	public boolean isEnabled() {
