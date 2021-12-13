@@ -228,6 +228,10 @@ public abstract class ActiveRouter extends MessageRouter {
 	 * does not fit into buffer
 	 */
 	protected int checkReceiving(Message m, DTNHost from) {
+		if (getHost().getGroupId().startsWith("router")) {
+			return RCV_OK;
+		}
+
 		if (isTransferring()) {
 			return TRY_LATER_BUSY; // only one connection at a time
 		}

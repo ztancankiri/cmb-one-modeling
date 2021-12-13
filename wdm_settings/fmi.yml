@@ -17,7 +17,7 @@ firstinterface.transmitRange = 10
 
 Group.router = BlueRouter
 Group.msgTtl = 1433
-Group.bufferSize = 10
+Group.bufferSize = 5
 Group.nrofInterfaces = 1
 Group.interface1 = firstinterface
 Group.nrofApplications = 0

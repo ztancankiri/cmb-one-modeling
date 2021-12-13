@@ -46,7 +46,7 @@ public class BlueRouter extends ActiveRouter {
 	@Override
 	public boolean createNewMessage(Message m) {
 		if (enabled) {
-			if (this.getFreeBufferSize() > 0){
+			if (this.getFreeBufferSize() > 0) {
 				return super.createNewMessage(m);
 			}
 			return false;
@@ -67,23 +67,16 @@ public class BlueRouter extends ActiveRouter {
 
 		incoming.setReceiveTime(SimClock.getTime());
 
-		Message outgoing = incoming;
-		for (Application app : getApplications(incoming.getAppID())) {
-			outgoing = app.handle(outgoing, this.host);
-			if (outgoing == null)
-				break;
-		}
-
 		isFinalRecipient = getHost().getGroupId().startsWith(ROUTER_NAME);
 		isFirstDelivery = isFinalRecipient && !isDeliveredMessage(incoming);
 
-		if (!isFinalRecipient && outgoing != null) {
+		if (!isFinalRecipient) {
 			addToMessages(incoming, false);
 		} else if (isFirstDelivery) {
 			this.deliveredMessages.put(id, incoming);
 		}
 
-		if (isDeliveredMessage(incoming)) {
+		if (isFinalRecipient) {
 			from.getRouter().messages.remove(id);
 		}
 
