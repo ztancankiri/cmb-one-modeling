@@ -6,18 +6,18 @@ package routing;
 
 import core.*;
 
-public class BlueRouter extends ActiveRouter {
+public class BluetoothRouter extends ActiveRouter {
 
 	private static final String ROUTER_NAME = "router";
 
 	private boolean enabled;
 
-	public BlueRouter(Settings s) {
+	public BluetoothRouter(Settings s) {
 		super(s);
 		this.enabled = false;
 	}
 
-	protected BlueRouter(BlueRouter r) {
+	protected BluetoothRouter(BluetoothRouter r) {
 		super(r);
 		this.enabled = r.enabled;
 	}
@@ -39,8 +39,8 @@ public class BlueRouter extends ActiveRouter {
 	}
 
 	@Override
-	public BlueRouter replicate() {
-		return new BlueRouter(this);
+	public BluetoothRouter replicate() {
+		return new BluetoothRouter(this);
 	}
 
 	@Override

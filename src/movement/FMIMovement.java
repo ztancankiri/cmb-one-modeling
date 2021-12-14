@@ -2,7 +2,7 @@ package movement;
 
 import core.Coord;
 import core.Settings;
-import routing.BlueRouter;
+import routing.BluetoothRouter;
 
 public class FMIMovement extends ExtendedMovementModel {
 
@@ -61,8 +61,8 @@ public class FMIMovement extends ExtendedMovementModel {
 				setCurrentMovementModel(carMM);
 				carMM.setNextRoute(homeMM.getHomeLocation(), workerMM.getRandomOfficeLocation());
 				mode = TO_WORK_MODE;
-				if (getHost().getRouter() instanceof BlueRouter) {
-					((BlueRouter) getHost().getRouter()).setEnabled(true);
+				if (getHost().getRouter() instanceof BluetoothRouter) {
+					((BluetoothRouter) getHost().getRouter()).setEnabled(true);
 				}
 			}
 			break;
@@ -77,8 +77,8 @@ public class FMIMovement extends ExtendedMovementModel {
 				setCurrentMovementModel(homeMM);
 				mode = HOME_MODE;
 
-				if (getHost().getRouter() instanceof BlueRouter) {
-					((BlueRouter) getHost().getRouter()).setEnabled(false);
+				if (getHost().getRouter() instanceof BluetoothRouter) {
+					((BluetoothRouter) getHost().getRouter()).setEnabled(false);
 				}
 			}
 			break;

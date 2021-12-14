@@ -1,11 +1,8 @@
-Scenario.name = default_scenario
+Scenario.name = Hypothetical Bluetooth Application
 Scenario.simulateConnections = true
 Scenario.updateInterval = 1
-# 43k ~= 12h
-#Scenario.endTime = 700k
 Scenario.endTime = 86k
-
-Scenario.nrofHostGroups = 6
+Scenario.nrofHostGroups = 7
 
 #=====================================================================
 
@@ -15,7 +12,7 @@ firstinterface.transmitRange = 10
 
 #=====================================================================
 
-Group.router = BlueRouter
+Group.router = BluetoothRouter
 Group.msgTtl = 200
 Group.bufferSize = 10
 Group.nrofInterfaces = 1
@@ -28,19 +25,18 @@ Group.timeDiffSTD = 7200
 Group.minGroupSize = 1
 Group.maxGroupSize = 3
 Group.nrofHosts = 50
-Group.homeLocationsFile = data/fmi/homes.wkt
-Group.officeLocationsFile = data/fmi/offices.wkt
-Group.classroomLocationsFile = data/fmi/classroom.wkt
-Group.officeClassroomWeight = 0.2
-Group.workDayLength = 3600
-
-Group.movementModel = FMIMovement
 Group.speed = 0.1, 0.2
 Group.waitTime = 0, 0
 
 #=====================================================================
 
 Group1.groupID = A
+Group1.movementModel = FMIMovement
+Group1.homeLocationsFile = data/fmi/exits.wkt
+Group1.officeLocationsFile = data/fmi/offices.wkt
+Group1.classroomLocationsFile = data/fmi/classrooms.wkt
+Group1.officeClassroomWeight = 0.2
+Group1.workDayLength = 3600
 
 #=====================================================================
 
@@ -75,9 +71,15 @@ Group6.nrofHosts = 0
 
 #=====================================================================
 
+Group7.groupID = Random
+Group7.movementModel = FMIPolygonRwp
+Group7.polygonFile = data/fmi/building.wkt
+Group7.nrofHosts = 3
+
+#=====================================================================
+
 MovementModel.rngSeed = [2; 8372; 98092; 18293; 777]
 MovementModel.worldSize = 2065, 1118
-#MovementModel.warmup = 43000
 MovementModel.warmup = 0
 
 #=====================================================================
