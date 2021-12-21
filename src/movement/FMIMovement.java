@@ -90,6 +90,7 @@ public class FMIMovement extends ExtendedMovementModel {
 
 	@Override
 	public Coord getInitialLocation() {
+		((BluetoothRouter) getHost().getRouter()).setEnabled(false);
 		Coord homeLoc = homeMM.getHomeLocation().clone();
 		homeMM.setLocation(homeLoc);
 		return homeLoc;

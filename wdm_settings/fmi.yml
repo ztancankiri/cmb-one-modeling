@@ -14,7 +14,7 @@ firstinterface.transmitRange = 10
 
 Group.router = BluetoothRouter
 Group.msgTtl = 200
-Group.bufferSize = 10
+Group.bufferSize = 50
 Group.nrofInterfaces = 1
 Group.interface1 = firstinterface
 Group.nrofApplications = 0
@@ -40,41 +40,42 @@ Group1.workDayLength = 3600
 
 #=====================================================================
 
-Group2.groupID = router1
-Group2.movementModel = StationaryMovement
-Group2.nodeLocationFile = data/fmi/router1.wkt
-Group2.nrofHosts = 1
+Group2.groupID = Random
+Group2.movementModel = FMIPolygonRwp
+Group2.polygonFile = data/fmi/building.wkt
+Group2.nrofHosts = 3
 
-Group3.groupID = router2
-Group3.movementModel = StationaryMovement
-Group3.nodeLocationFile = data/fmi/router2.wkt
-Group3.nrofHosts = 1
-
-Group4.groupID = router3
-Group4.movementModel = StationaryMovement
-Group4.nodeLocationFile = data/fmi/router3.wkt
-Group4.nrofHosts = 1
 
 #=====================================================================
 
-Group5.groupID = throwbox
-Group5.bufferSize = 1000000
+Group3.groupID = router1
+Group3.movementModel = StationaryMovement
+Group3.nodeLocationFile = data/fmi/router1.wkt
+Group3.nrofHosts = 1
+
+Group4.groupID = router2
+Group4.movementModel = StationaryMovement
+Group4.nodeLocationFile = data/fmi/router2.wkt
+Group4.nrofHosts = 1
+
+Group5.groupID = router3
 Group5.movementModel = StationaryMovement
-Group5.nodeLocationFile = data/fmi/throwbox.wkt
+Group5.nodeLocationFile = data/fmi/router3.wkt
 Group5.nrofHosts = 1
 
 #=====================================================================
 
-Group6.groupID = K
-Group6.movementModel = ShortestPathMapBasedMovement
-Group6.nrofHosts = 0
+Group6.groupID = throwbox
+Group6.bufferSize = 1000000
+Group6.movementModel = StationaryMovement
+Group6.nodeLocationFile = data/fmi/throwbox.wkt
+Group6.nrofHosts = 1
 
 #=====================================================================
 
-Group7.groupID = Random
-Group7.movementModel = FMIPolygonRwp
-Group7.polygonFile = data/fmi/building.wkt
-Group7.nrofHosts = 3
+Group7.groupID = K
+Group7.movementModel = ShortestPathMapBasedMovement
+Group7.nrofHosts = 0
 
 #=====================================================================
 
@@ -112,4 +113,11 @@ GUI.EventLogPanel.nrofEvents = 200
 
 #=====================================================================
 
-Report.nrofReports = 0
+  # how many reports to load
+Report.nrofReports = 1
+  # length of the warm up period (simulated seconds)
+Report.warmup = 0
+ # default directory of reports (can be overridden per Report with output setting)
+Report.reportDir = reports/
+# Report classes to load
+Report.report1 = MessageStatsReport

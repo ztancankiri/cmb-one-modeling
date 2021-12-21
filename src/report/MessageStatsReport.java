@@ -4,14 +4,12 @@
  */
 package report;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import core.DTNHost;
 import core.Message;
 import core.MessageListener;
+import routing.BluetoothRouter;
 
 /**
  * Report for generating different kind of total statistics about message
@@ -26,7 +24,8 @@ public class MessageStatsReport extends Report implements MessageListener {
 	private List<Double> latencies;
 	private List<Integer> hopCounts;
 	private List<Double> msgBufferTime;
-	private List<Double> rtt; // round trip times
+	private HashSet<String> uniqueDroppedMessages;
+
 
 	private int nrofDropped;
 	private int nrofRemoved;
@@ -52,7 +51,7 @@ public class MessageStatsReport extends Report implements MessageListener {
 		this.latencies = new ArrayList<Double>();
 		this.msgBufferTime = new ArrayList<Double>();
 		this.hopCounts = new ArrayList<Integer>();
-		this.rtt = new ArrayList<Double>();
+		this.uniqueDroppedMessages = new HashSet<>();
 
 		this.nrofDropped = 0;
 		this.nrofRemoved = 0;
@@ -77,6 +76,9 @@ public class MessageStatsReport extends Report implements MessageListener {
 		else {
 			this.nrofRemoved++;
 		}
+
+		this.uniqueDroppedMessages.add(m.getId());
+
 
 		this.msgBufferTime.add(getSimTime() - m.getReceiveTime());
 	}
@@ -105,7 +107,6 @@ public class MessageStatsReport extends Report implements MessageListener {
 			this.hopCounts.add(m.getHops().size() - 1);
 
 			if (m.isResponse()) {
-				this.rtt.add(getSimTime() -	m.getRequest().getCreationTime());
 				this.nrofResponseDelivered++;
 			}
 		}
@@ -140,39 +141,37 @@ public class MessageStatsReport extends Report implements MessageListener {
 		write("Message stats for scenario " + getScenarioName() +
 				"\nsim_time: " + format(getSimTime()));
 		double deliveryProb = 0; // delivery probability
-		double responseProb = 0; // request-response success probability
 		double overHead = Double.NaN;	// overhead ratio
 
-		if (this.nrofCreated > 0) {
-			deliveryProb = (1.0 * this.nrofDelivered) / this.nrofCreated;
-		}
+
 		if (this.nrofDelivered > 0) {
 			overHead = (1.0 * (this.nrofRelayed - this.nrofDelivered)) /
 				this.nrofDelivered;
 		}
-		if (this.nrofResponseReqCreated > 0) {
-			responseProb = (1.0* this.nrofResponseDelivered) /
-				this.nrofResponseReqCreated;
+
+		for (String value: BluetoothRouter.SHARED_DELIVERIES ) {
+			this.uniqueDroppedMessages.remove(value);
+		}
+
+		if (this.nrofCreated > 0) {
+			deliveryProb = (1.0 * this.nrofDelivered) / (this.uniqueDroppedMessages.size() + this.nrofDelivered);
 		}
 
 		String statsText = "created: " + this.nrofCreated +
 			"\nstarted: " + this.nrofStarted +
 			"\nrelayed: " + this.nrofRelayed +
-			"\naborted: " + this.nrofAborted +
 			"\ndropped: " + this.nrofDropped +
-			"\nremoved: " + this.nrofRemoved +
+			"\nunique dropped: " + this.uniqueDroppedMessages.size() +
 			"\ndelivered: " + this.nrofDelivered +
 			"\ndelivery_prob: " + format(deliveryProb) +
-			"\nresponse_prob: " + format(responseProb) +
 			"\noverhead_ratio: " + format(overHead) +
 			"\nlatency_avg: " + getAverage(this.latencies) +
 			"\nlatency_med: " + getMedian(this.latencies) +
 			"\nhopcount_avg: " + getIntAverage(this.hopCounts) +
 			"\nhopcount_med: " + getIntMedian(this.hopCounts) +
+			"\nhopcount_max: " + getIntMax(this.hopCounts) +
 			"\nbuffertime_avg: " + getAverage(this.msgBufferTime) +
-			"\nbuffertime_med: " + getMedian(this.msgBufferTime) +
-			"\nrtt_avg: " + getAverage(this.rtt) +
-			"\nrtt_med: " + getMedian(this.rtt)
+			"\nbuffertime_med: " + getMedian(this.msgBufferTime)
 			;
 
 		write(statsText);
