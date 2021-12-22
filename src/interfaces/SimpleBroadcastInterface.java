@@ -95,8 +95,8 @@ public class SimpleBroadcastInterface extends NetworkInterface {
 				((BluetoothRouter) getHost().getRouter()).isEnabled()) &&
 				(i.getHost().getRouter() instanceof BluetoothRouter &&
 				((BluetoothRouter) i.getHost().getRouter()).isEnabled()) ||
-				getHost().getGroupId().startsWith("router") ||
-				i.getHost().getGroupId().startsWith("router")) {
+				getHost().getGroupId().startsWith(BluetoothRouter.GATEWAY_NAME) ||
+				i.getHost().getGroupId().startsWith(BluetoothRouter.GATEWAY_NAME)) {
 				connect(i);
 			}
 		}

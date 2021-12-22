@@ -228,7 +228,7 @@ public abstract class ActiveRouter extends MessageRouter {
 	 * does not fit into buffer
 	 */
 	protected int checkReceiving(Message m, DTNHost from) {
-		if (getHost().getGroupId().startsWith("router")) {
+		if (getHost().getGroupId().startsWith(BluetoothRouter.GATEWAY_NAME)) {
 			return RCV_OK;
 		}
 

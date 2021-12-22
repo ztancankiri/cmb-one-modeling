@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class BluetoothRouter extends ActiveRouter {
 
-	private static final String ROUTER_NAME = "router";
+	public static final String GATEWAY_NAME = "gateway";
 	public static final Set<String> SHARED_DELIVERIES = new HashSet<>();
 
 	private boolean enabled;
@@ -72,7 +72,7 @@ public class BluetoothRouter extends ActiveRouter {
 
 		incoming.setReceiveTime(SimClock.getTime());
 
-		isFinalRecipient = getHost().getGroupId().startsWith(ROUTER_NAME);
+		isFinalRecipient = getHost().getGroupId().startsWith(GATEWAY_NAME);
 		isFirstDelivery = isFinalRecipient && !SHARED_DELIVERIES.contains(id);
 
 		if (!isFinalRecipient) {
