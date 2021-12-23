@@ -14,7 +14,7 @@ firstinterface.transmitRange = 10
 
 Group.router = BluetoothRouter
 Group.msgTtl = 200
-Group.bufferSize = 300
+Group.bufferSize = 50
 Group.nrofInterfaces = 1
 Group.interface1 = firstinterface
 Group.nrofApplications = 0
@@ -24,7 +24,7 @@ Group.nrofApplications = 0
 Group.timeDiffSTD = 7200
 Group.minGroupSize = 1
 Group.maxGroupSize = 3
-Group.nrofHosts = 50
+Group.nrofHosts = 300
 Group.speed = 0.1, 0.2
 Group.waitTime = 0, 0
 
