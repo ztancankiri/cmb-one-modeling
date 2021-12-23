@@ -1,0 +1,123 @@
+Scenario.name = Hypothetical Bluetooth Application
+Scenario.simulateConnections = true
+Scenario.updateInterval = 1
+Scenario.endTime = 60k
+Scenario.nrofHostGroups = 7
+
+#=====================================================================
+
+firstinterface.type = SimpleBroadcastInterface
+firstinterface.transmitSpeed = 250000k
+firstinterface.transmitRange = 10
+
+#=====================================================================
+
+Group.router = BluetoothRouter
+Group.msgTtl = 200
+Group.bufferSize = 50
+Group.nrofInterfaces = 1
+Group.interface1 = firstinterface
+Group.nrofApplications = 0
+
+#=====================================================================
+
+Group.timeDiffSTD = 7200
+Group.minGroupSize = 1
+Group.maxGroupSize = 3
+Group.nrofHosts = 50
+Group.speed = 0.1, 0.2
+Group.waitTime = 0, 0
+
+#=====================================================================
+
+Group1.groupID = A
+Group1.movementModel = FMIMovement
+Group1.homeLocationsFile = data/fmi/exits.wkt
+Group1.officeLocationsFile = data/fmi/offices.wkt
+Group1.classroomLocationsFile = data/fmi/classrooms.wkt
+Group1.officeClassroomWeight = 0.2
+Group1.workDayLength = 3600
+
+#=====================================================================
+
+Group2.groupID = Random
+Group2.movementModel = FMIPolygonRwp
+Group2.polygonFile = data/fmi/building.wkt
+Group2.nrofHosts = 3
+
+
+#=====================================================================
+
+Group3.groupID = gatewayA
+Group3.movementModel = StationaryMovement
+Group3.nodeLocationFile = data/fmi/gatewayA.wkt
+Group3.nrofHosts = 1
+
+Group4.groupID = gatewayB
+Group4.movementModel = StationaryMovement
+Group4.nodeLocationFile = data/fmi/gatewayB.wkt
+Group4.nrofHosts = 1
+
+Group5.groupID = gatewayC
+Group5.movementModel = StationaryMovement
+Group5.nodeLocationFile = data/fmi/gatewayC.wkt
+Group5.nrofHosts = 1
+
+#=====================================================================
+
+Group6.groupID = throwbox
+Group6.bufferSize = 1000000
+Group6.movementModel = StationaryMovement
+Group6.nodeLocationFile = data/fmi/throwbox.wkt
+Group6.nrofHosts = 1
+
+#=====================================================================
+
+Group7.groupID = K
+Group7.movementModel = ShortestPathMapBasedMovement
+Group7.nrofHosts = 0
+
+#=====================================================================
+
+MovementModel.rngSeed = [2; 8372; 98092; 18293; 777]
+MovementModel.worldSize = 2065, 1118
+MovementModel.warmup = 0
+
+#=====================================================================
+
+MapBasedMovement.nrofMapFiles = 1
+MapBasedMovement.mapFile1 = data/fmi/paths.wkt
+
+#=====================================================================
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 55,65
+Events1.size = 1
+Events1.hosts = 0,53
+Events1.prefix = M
+
+#=====================================================================
+
+Optimization.connectionAlg = 2
+Optimization.cellSizeMult = 5
+Optimization.randomizeUpdateOrder = true
+
+#=====================================================================
+
+GUI.UnderlayImage.fileName = data/fmi/bg.png
+GUI.UnderlayImage.offset = 0, 0
+GUI.UnderlayImage.scale = 1
+GUI.UnderlayImage.rotate = 0
+GUI.EventLogPanel.nrofEvents = 200
+
+#=====================================================================
+
+  # how many reports to load
+Report.nrofReports = 1
+  # length of the warm up period (simulated seconds)
+Report.warmup = 0
+ # default directory of reports (can be overridden per Report with output setting)
+Report.reportDir = reports/
+# Report classes to load
+Report.report1 = MessageStatsReport

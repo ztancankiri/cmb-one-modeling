@@ -304,3 +304,6 @@ GUI.UnderlayImage.rotate = -0.015
 GUI.EventLogPanel.nrofEvents = 200
 # Regular Expression log filter (see Pattern-class from the Java API for RE-matching details)
 #GUI.EventLogPanel.REfilter = .*p[1-9]<->p[1-9]$
+
+Events.nrof = 0
+Group.nrofInterfaces = 0

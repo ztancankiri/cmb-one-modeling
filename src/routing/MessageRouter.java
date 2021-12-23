@@ -82,26 +82,26 @@ public abstract class MessageRouter {
 	/** Receive return value for unspecified reason */
 	public static final int DENIED_UNSPECIFIED = -99;
 
-	private List<MessageListener> mListeners;
+	protected List<MessageListener> mListeners;
 	/** The messages being transferred with msgID_hostName keys */
-	private HashMap<String, Message> incomingMessages;
+	protected HashMap<String, Message> incomingMessages;
 	/** The messages this router is carrying */
-	private HashMap<String, Message> messages;
+	protected HashMap<String, Message> messages;
 	/** The messages this router has received as the final recipient */
-	private HashMap<String, Message> deliveredMessages;
+	protected HashMap<String, Message> deliveredMessages;
 	/** The messages that Applications on this router have blacklisted */
-	private HashMap<String, Object> blacklistedMessages;
+	protected HashMap<String, Object> blacklistedMessages;
 	/** Host where this router belongs to */
-	private DTNHost host;
+	protected DTNHost host;
 	/** size of the buffer */
-	private long bufferSize;
+	protected long bufferSize;
 	/** TTL for all messages */
 	protected int msgTtl;
 	/** Queue mode for sending messages */
-	private int sendQueueMode;
+	protected int sendQueueMode;
 
 	/** applications attached to the host */
-	private HashMap<String, Collection<Application>> applications = null;
+	protected HashMap<String, Collection<Application>> applications = null;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -595,12 +595,15 @@ public abstract class MessageRouter {
 				" incoming message(s)");
 		RoutingInfo delivered = new RoutingInfo(this.deliveredMessages.size() +
 				" delivered message(s)");
+		RoutingInfo messages = new RoutingInfo(this.messages.size() +
+				" message(s)");
 
 		RoutingInfo cons = new RoutingInfo(host.getConnections().size() +
 			" connection(s)");
 
 		ri.addMoreInfo(incoming);
 		ri.addMoreInfo(delivered);
+		ri.addMoreInfo(messages);
 		ri.addMoreInfo(cons);
 
 		for (Message m : this.incomingMessages.values()) {
@@ -609,6 +612,10 @@ public abstract class MessageRouter {
 
 		for (Message m : this.deliveredMessages.values()) {
 			delivered.addMoreInfo(new RoutingInfo(m + " path:" + m.getHops()));
+		}
+
+		for (Message m : this.messages.values()) {
+			messages.addMoreInfo(new RoutingInfo(m + " path:" + m.getHops()));
 		}
 
 		for (Connection c : host.getConnections()) {

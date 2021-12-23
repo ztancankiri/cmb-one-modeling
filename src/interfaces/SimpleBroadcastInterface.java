@@ -10,6 +10,7 @@ import core.CBRConnection;
 import core.Connection;
 import core.NetworkInterface;
 import core.Settings;
+import routing.BluetoothRouter;
 
 /**
  * A simple Network Interface that provides a constant bit-rate service, where
@@ -90,7 +91,14 @@ public class SimpleBroadcastInterface extends NetworkInterface {
 		Collection<NetworkInterface> interfaces =
 			optimizer.getNearInterfaces(this);
 		for (NetworkInterface i : interfaces) {
-			connect(i);
+			if((getHost().getRouter() instanceof BluetoothRouter &&
+				((BluetoothRouter) getHost().getRouter()).isEnabled()) &&
+				(i.getHost().getRouter() instanceof BluetoothRouter &&
+				((BluetoothRouter) i.getHost().getRouter()).isEnabled()) ||
+				getHost().getGroupId().startsWith(BluetoothRouter.GATEWAY_NAME) ||
+				i.getHost().getGroupId().startsWith(BluetoothRouter.GATEWAY_NAME)) {
+				connect(i);
+			}
 		}
 	}
 

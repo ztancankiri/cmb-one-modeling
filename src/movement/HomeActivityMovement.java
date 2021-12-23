@@ -56,7 +56,7 @@ public class HomeActivityMovement extends MapBasedMovement
 	 */
 	public HomeActivityMovement(Settings settings) {
 		super(settings);
-		distance = 100;
+		distance = 0;
 		pathFinder = new DijkstraPathFinder(null);
 		mode = WALKING_HOME_MODE;
 

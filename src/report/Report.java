@@ -417,4 +417,15 @@ public abstract class Report {
 		return format(sum2/values.size() - (E_X*E_X));
 	}
 
+	public int getIntMax(List<Integer> values){
+		if (values.size() == 0) {
+			return 0;
+		}
+		int max = values.get(0);
+		for(int value: values){
+			if(max < value) max = value;
+		}
+		return max;
+	}
+
 }
