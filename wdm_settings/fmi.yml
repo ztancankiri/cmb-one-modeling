@@ -14,7 +14,7 @@ firstinterface.transmitRange = 10
 
 Group.router = BluetoothRouter
 Group.msgTtl = 200
-Group.bufferSize = 50
+Group.bufferSize = 300
 Group.nrofInterfaces = 1
 Group.interface1 = firstinterface
 Group.nrofApplications = 0
@@ -43,7 +43,7 @@ Group1.workDayLength = 3600
 Group2.groupID = Random
 Group2.movementModel = FMIPolygonRwp
 Group2.polygonFile = data/fmi/building.wkt
-Group2.nrofHosts = 3
+Group2.nrofHosts = 15
 
 
 #=====================================================================
@@ -94,7 +94,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 55,65
 Events1.size = 1
-Events1.hosts = 0,53
+Events1.hosts = 0,315
 Events1.prefix = M
 
 #=====================================================================
